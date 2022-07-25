@@ -55,6 +55,7 @@ const App = () => {
       })
       .then(credentials => {
         setAccessToken(credentials.accessToken);
+          console.log(credentials.accessToken);
       })
       .catch(error => console.log(error));
   };
