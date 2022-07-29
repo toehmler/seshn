@@ -7,7 +7,6 @@ import uuid
 
 from src import db
 
-
 class Post(db.Model):
 
     __tablename__ = 'posts'

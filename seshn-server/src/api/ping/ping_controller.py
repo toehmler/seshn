@@ -2,13 +2,12 @@
 
 
 from flask import Blueprint
-from flask_restx import Resource, Api
+from flask_restx import Resource, Api, Namespace
+
+api = Namespace('ping', description="Sanity check endpoint")
 
 
-ping_blueprint = Blueprint('ping', __name__)
-ping_api = Api(ping_blueprint)
-
-
+@api.route('/')
 class Ping(Resource):
 
     def get(self):
@@ -16,6 +15,3 @@ class Ping(Resource):
             'status': 'success',
             'message': 'pong!'
         }
-
-
-ping_api.add_resource(Ping, '/ping')

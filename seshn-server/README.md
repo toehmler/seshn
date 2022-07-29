@@ -20,9 +20,10 @@ docker-compose up -d
 ```
 3. Initialize database
 ```shell
-docker-compose exec api python manage.py recreate_db
+docker-compose exec seshn-db python manage.py recreate_db
 ```
 4. Sanity check
+5. TODO response 
 ```shell
 curl localhost:5004/ping
 ```

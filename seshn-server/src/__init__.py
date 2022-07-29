@@ -27,8 +27,17 @@ def create_app(script_info=None):
     # init db
     db.init_app(app)
 
+
     # init authorization
     csp = {
+        'style-src': [
+            '\'unsafe-inline\'',
+            '\'self\'',
+        ],
+        'script-src': [
+            '\'unsafe-inline\'',
+            '\'self\'',
+        ],
         'default-src': ['\'self\''],
         'frame-ancestors': ['\'none\'']
     }
@@ -44,7 +53,9 @@ def create_app(script_info=None):
         response.headers['Cache-Control'] = 'no-store, max-age=0'
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '0'
-        response.headers['Content-Type'] = 'application/json; charset=utf-8'
+        # TODO interferes with docs ui generation
+        # need to add exception for /docs routre
+        #response.headers['Content-Type'] = 'application/json; charset=utf-8'
         return response
 
     CORS(
@@ -55,12 +66,33 @@ def create_app(script_info=None):
         max_age=86400
     )
 
+    from flask_restx import Api
+
+    from src.api.profile.profile_controller import api as profile_ns
+    from src.api.ping.ping_controller import api as ping_ns
+    from src.api.post.post_controller import api as post_ns
+
+    api = Api(
+        title='Seshn API',
+        version='0.1',
+        description='Backend service for client app',
+        doc='/docs'
+    )
+
+    api.add_namespace(ping_ns, path='/ping')
+    api.add_namespace(profile_ns, path='/profile')
+    api.add_namespace(post_ns, path='/post')
+
+    api.init_app(app)
+
     # register blueprints
+    '''
     from src.api.ping.ping_controller import ping_blueprint
     app.register_blueprint(ping_blueprint)
     from src.api.profile.profile_controller import profile_bp
     app.register_blueprint(profile_bp)
     from src.api.post.post_controller import post_bp
     app.register_blueprint(post_bp)
+    '''
 
     return app
