@@ -122,6 +122,15 @@ request sample:
 ```
 
 
+## Documentation
+
+Flask-RESTx automatically generates swagger documentation using the `@api` annotations
+that are used to define routes and modes. This can be viewed by going to
+`http://localhost:5004/docs` in a web browser once the server has been started
+
+
+
+
 
 
 
