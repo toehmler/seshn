@@ -1,34 +1,28 @@
-import { formatTimeSinceStart, now } from '@/helpers';
-import { useInterval } from '@/hooks';
-import { Box, Fab, Text } from 'native-base';
-import { useEffect, useState } from 'react';
+import { formatTimeSinceStart } from '@/helpers';
+import { useAppDispatch, useAppSelector, useInterval } from '@/hooks';
+import {
+  resetSession,
+  startTracking,
+  stopTracking,
+  updateDuration,
+} from '@/redux';
+import { Box, Text } from 'native-base';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { MapButton } from './MapButton';
 
-interface Props {
-  setTracking: (val: boolean) => void;
-}
-
-export const SessionControls = ({ setTracking }: Props) => {
+export const SessionControls = () => {
   const { top, bottom } = useSafeAreaInsets();
 
-  const [delay, setDelay] = useState<number | null>(null);
-  const [time, setTime] = useState(0);
+  const { tracking, duration } = useAppSelector((state) => state.session);
+  const dispatch = useAppDispatch();
 
-  useInterval(() => setTime((t) => t + (delay || 0)), delay);
-
-  useEffect(() => {
-    setTracking(!!delay);
-  }, [delay]);
-
-  const calculateSessionDuration = (start: number) => {
-    return formatTimeSinceStart(start);
-  };
+  useInterval(() => dispatch(updateDuration(10)), tracking ? 10 : null);
 
   return (
     <>
       <Box
         position="absolute"
-        bottom={bottom}
+        bottom={bottom + 5}
         alignSelf="center"
         bgColor="black"
         px={2}
@@ -40,25 +34,24 @@ export const SessionControls = ({ setTracking }: Props) => {
           fontSize={17}
           style={{ fontVariant: ['tabular-nums'] }}
         >
-          {calculateSessionDuration(time)}
+          {formatTimeSinceStart(duration)}
         </Text>
       </Box>
-
-      <Fab
-        renderInPortal={false}
-        colorScheme={delay ? 'red' : 'green'}
-        label={delay ? 'Stop Session' : 'Start Session'}
-        shadow={5}
-        placement="top-right"
-        top={top}
-        onPress={() => {
-          if (delay) {
-            setDelay(null);
-          } else {
-            setTime(0);
-            setDelay(10);
-          }
-        }}
+      <MapButton
+        colorScheme={tracking ? 'red' : 'green'}
+        label={
+          tracking ? 'Stop Session' : duration > 0 ? 'Resume' : 'Start Session'
+        }
+        placement="bottom-left"
+        onPress={() => dispatch((tracking ? stopTracking : startTracking)())}
+        bottom={bottom}
+      />
+      <MapButton
+        colorScheme="blue"
+        label="Reset"
+        placement="bottom-right"
+        onPress={() => dispatch(resetSession())}
+        bottom={bottom}
       />
     </>
   );

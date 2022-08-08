@@ -1,19 +1,18 @@
 import { getCurrentLocation } from '@/helpers';
-import { Location } from '@/types';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { addPathPoint } from '@/redux';
 import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
 
-interface Props {
-  tracking: boolean;
-}
-
-export const Map = ({ tracking }: Props) => {
+export const Map = () => {
   const [initialCoords, setInitialCoords] = useState({
     latitude: 0,
     longitude: 0,
   });
-  const [trackedCoords, setTrackedCoords] = useState<Location[]>([]);
+
+  const { path, tracking } = useAppSelector((state) => state.session);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     (async () => {
@@ -21,12 +20,6 @@ export const Map = ({ tracking }: Props) => {
       setInitialCoords(loc);
     })();
   }, []);
-
-  useEffect(() => {
-    if (tracking) {
-      setTrackedCoords([]);
-    }
-  }, [tracking]);
 
   return (
     <MapView
@@ -45,14 +38,11 @@ export const Map = ({ tracking }: Props) => {
       onUserLocationChange={({ nativeEvent }) => {
         if (tracking && nativeEvent?.coordinate) {
           const { latitude, longitude } = nativeEvent.coordinate;
-          setTrackedCoords((prevCoords) => [
-            ...prevCoords,
-            { latitude, longitude },
-          ]);
+          dispatch(addPathPoint({ latitude, longitude }));
         }
       }}
     >
-      <Polyline coordinates={trackedCoords} strokeColor="red" strokeWidth={3} />
+      <Polyline coordinates={path} strokeColor="red" strokeWidth={3} />
     </MapView>
   );
 };
