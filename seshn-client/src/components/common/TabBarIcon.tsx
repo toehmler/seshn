@@ -20,6 +20,9 @@ export const TabBarIcon = ({ routeName, focused, size, color }: Props) => {
     case 'Profile':
       iconName = 'person';
       break;
+    case 'SessionTracker':
+      iconName = 'map';
+      break;
     default:
       throw new Error(`No icon for ${routeName}`);
   }

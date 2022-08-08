@@ -1,3 +1,5 @@
+import { LatLng } from 'react-native-maps';
+
 export enum Sport {
   SKIING = 'Skiing',
   SNOWBOARDING = 'Snowboarding',

@@ -11,11 +11,13 @@ import { TouchableOpacity } from 'react-native';
 import { FeedStack, FeedStackParamList } from './FeedStack';
 import { ProfileStack } from './ProfileStack';
 import { LibraryStack } from './LibraryStack';
+import { SessionTrackerScreen } from '@/screens';
 
 export type TabParamList = {
   Feed: NavigatorScreenParams<FeedStackParamList>;
   Profile: undefined;
   Library: undefined;
+  SessionTracker: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -56,23 +58,17 @@ export const BottomTabs = () => {
             {props.children}
           </TouchableOpacity>
         ),
+        headerShown: false,
       })}
     >
+      <Tab.Screen name="Feed" component={FeedStack} />
+      <Tab.Screen name="Library" component={LibraryStack} />
       <Tab.Screen
-        name="Feed"
-        component={FeedStack}
-        options={{ headerShown: false }}
+        name="SessionTracker"
+        component={SessionTrackerScreen}
+        options={{ title: 'Session Tracker' }}
       />
-      <Tab.Screen
-        name="Library"
-        component={LibraryStack}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileStack}
-        options={{ headerShown: false }}
-      />
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 };
