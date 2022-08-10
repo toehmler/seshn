@@ -1,5 +1,10 @@
 import { formatTimeSinceStart } from '@/helpers';
-import { useAppDispatch, useAppSelector, useInterval } from '@/hooks';
+import {
+  useActionSheet,
+  useAppDispatch,
+  useAppSelector,
+  useInterval,
+} from '@/hooks';
 import {
   resetSession,
   startTracking,
@@ -17,6 +22,24 @@ export const SessionControls = () => {
   const dispatch = useAppDispatch();
 
   useInterval(() => dispatch(updateDuration(10)), tracking ? 10 : null);
+
+  const handleReset = useActionSheet(
+    [
+      {
+        text: 'Save and reset',
+        action: () => dispatch(resetSession()),
+      },
+      {
+        text: 'Reset without saving',
+        action: () => dispatch(resetSession()),
+        destructive: true,
+      },
+    ],
+    {
+      title: 'Are you sure you want to reset your session?',
+      message: "The current session won't be saved",
+    }
+  );
 
   return (
     <>
@@ -50,8 +73,9 @@ export const SessionControls = () => {
         colorScheme="blue"
         label="Reset"
         placement="bottom-right"
-        onPress={() => dispatch(resetSession())}
+        onPress={handleReset}
         bottom={bottom}
+        disabled={duration === 0}
       />
     </>
   );

@@ -17,12 +17,14 @@ export const now = (): number => {
   return Date.now();
 };
 
+const pad = (num: number, size = 2): string => {
+  return num.toString().padStart(size, '0');
+};
+
 export const formatTimeSinceStart = (duration: number): string => {
   const seconds = Math.floor(duration / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
 
-  return `${hours.toString().padStart(2, '0')}:${(minutes % 60)
-    .toString()
-    .padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
+  return `${pad(hours)}:${pad(minutes % 60)}:${pad(seconds % 60)}`;
 };
