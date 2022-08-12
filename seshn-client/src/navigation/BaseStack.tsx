@@ -1,23 +1,28 @@
 import { useAuth } from '@/hooks';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen } from '@/screens';
+import { LoginScreen, PostScreen } from '@/screens';
 import { useColorModeValue, useTheme } from 'native-base';
 import { BottomTabs, TabParamList } from './BottomTabs';
 import { FeedStackParamList } from './FeedStack';
 import { ProfileStackParamList } from './ProfileStack';
 import { LibraryStackParamList } from './LibraryStack';
+import { Asset } from '@/types';
+import { GoBackButton } from '@/components';
 
-export type AuthStackParamList = {
+export type BaseStackParamList = {
   Authorized: NavigatorScreenParams<TabParamList>;
   Login: undefined;
-  SignUp: undefined;
+  Post: {
+    assets: Asset[];
+    initialIndex: number;
+  };
 };
 
 declare global {
   namespace ReactNavigation {
     interface RootParamList
-      extends AuthStackParamList,
+      extends BaseStackParamList,
         FeedStackParamList,
         TabParamList,
         ProfileStackParamList,
@@ -25,9 +30,9 @@ declare global {
   }
 }
 
-const Stack = createStackNavigator<AuthStackParamList>();
+const Stack = createStackNavigator<BaseStackParamList>();
 
-export const AuthStack = () => {
+export const BaseStack = () => {
   const { colors } = useTheme();
   const { accessToken } = useAuth();
 
@@ -46,11 +51,18 @@ export const AuthStack = () => {
       }}
     >
       {accessToken ? (
-        <Stack.Screen
-          name="Authorized"
-          component={BottomTabs}
-          options={{ headerShown: false }}
-        />
+        <>
+          <Stack.Screen
+            name="Authorized"
+            component={BottomTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Post"
+            component={PostScreen}
+            options={{ headerShown: false, presentation: 'transparentModal' }}
+          />
+        </>
       ) : (
         <Stack.Screen
           name="Login"

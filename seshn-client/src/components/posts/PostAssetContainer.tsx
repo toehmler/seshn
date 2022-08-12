@@ -1,18 +1,11 @@
 import { Asset } from '@/types';
-import {
-  Center,
-  FlatList,
-  Pressable,
-  Text,
-  useColorModeValue,
-} from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { Box, FlatList, Pressable, Text, useColorModeValue } from 'native-base';
 import { Dimensions } from 'react-native';
 import { PostAsset } from './PostAsset';
 
 interface Props {
   assets: Asset[];
-  activeSlideIndex: number;
-  setActiveSlideIndex: (index: number) => void;
 }
 
 const { width: fullWidth } = Dimensions.get('screen');
@@ -70,12 +63,10 @@ const getBorderProps = (index: number, isFullWidth: boolean) => {
   }
 };
 
-export const PostAssetContainer = ({
-  assets,
-  activeSlideIndex,
-  setActiveSlideIndex,
-}: Props) => {
+export const PostAssetContainer = ({ assets }: Props) => {
   const borderColor = useColorModeValue('bgLight', 'bgDark');
+
+  const navigation = useNavigation();
 
   const wideAsset: Asset | null =
     assets.length === 3 ? assets[assets.length - 1] : null;
@@ -85,44 +76,29 @@ export const PostAssetContainer = ({
   const lastVisibleAsset = assets.length > 3 ? assets[3] : null;
 
   return (
-    // <Carousel
-    //   height={width}
-    //   width={width}
-    //   data={assets}
-    //   renderItem={({ item }) => (
-    //     <PostAsset
-    //       asset={item}
-    //       isActive={assets[activeSlideIndex].id === item.id}
-    //     />
-    //   )}
-    //   onSnapToItem={setActiveSlideIndex}
-    //   loop
-    //   panGestureHandlerProps={{
-    //     activeOffsetX: [-10, 10],
-    //   }}
-    // />
     <FlatList
       data={visibleAssets}
       numColumns={2}
       renderItem={({ item, index }) => (
-        <Center
+        <Pressable
           borderColor={borderColor}
           {...getBorderProps(
             index,
             assets.length === 1 || item.id === wideAsset?.id
           )}
+          onPress={() =>
+            navigation.navigate('Post', { assets, initialIndex: index })
+          }
         >
           <PostAsset
             asset={item}
-            isActive={assets[activeSlideIndex].id === item.id}
             {...getDimensionProps(assets.length, item.id === wideAsset?.id)}
             thumbnail={item.id === lastVisibleAsset?.id}
           />
           {item.id === lastVisibleAsset?.id && (
-            <Pressable
+            <Box
               w={fullWidth / 2}
               h={fullWidth / 2}
-              onPress={() => console.log('expand')}
               backgroundColor="black:alpha.50"
               position="absolute"
               justifyContent="center"
@@ -131,9 +107,9 @@ export const PostAssetContainer = ({
               <Text color="lightText" fontSize={24} fontWeight="bold">
                 + {assets.length - 3}
               </Text>
-            </Pressable>
+            </Box>
           )}
-        </Center>
+        </Pressable>
       )}
       keyExtractor={(item) => item.id}
     />
