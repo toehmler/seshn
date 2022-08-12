@@ -5,20 +5,36 @@ import { LightboxImage, Video } from '../common';
 interface Props {
   asset: Asset;
   isActive: boolean;
+  width?: number;
+  height?: number;
+  thumbnail?: boolean;
 }
 
-export const PostAsset = ({ asset, isActive }: Props) => {
-  const { width } = useWindowDimensions();
+export const PostAsset = ({
+  asset,
+  isActive,
+  width,
+  height,
+  thumbnail = false,
+}: Props) => {
+  const { width: screenWidth } = useWindowDimensions();
 
   return asset.type === MediaType.IMAGE ? (
-    <LightboxImage source={asset.uri} imageStyle={{ width, height: width }} />
+    <LightboxImage
+      source={asset.uri}
+      imageStyle={{
+        width: width || screenWidth,
+        height: height || screenWidth,
+      }}
+    />
   ) : (
     <Video
       source={asset.uri}
-      width={width}
-      height={width}
+      width={width || screenWidth}
+      height={height || screenWidth}
       paused={!isActive}
       id={asset.id}
+      thumbnail={thumbnail}
     />
   );
 };

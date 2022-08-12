@@ -15,8 +15,8 @@ export const theme = extendTheme({
       900: '#004571',
       1000: '#002a52',
     },
-    bgLight: '#e7e5e4', // light.200
-    bgDark: '#3f3f46', // dark.200
+    bgLight: '#cbeafc', // primary.100
+    bgDark: '#002a52', // primary.1000
   },
   config: {
     useSystemColorMode: true,

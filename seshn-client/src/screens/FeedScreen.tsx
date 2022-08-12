@@ -7,7 +7,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useDisclose } from 'native-base';
 import { useLayoutEffect } from 'react';
 
-interface Props extends StackScreenProps<FeedStackParamList, 'Home'> {}
+interface Props extends StackScreenProps<FeedStackParamList, 'FeedHome'> {}
 
 export const FeedScreen = ({ navigation }: Props) => {
   const { sportFilter } = useFeedOptions();
