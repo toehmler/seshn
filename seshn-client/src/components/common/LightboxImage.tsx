@@ -1,6 +1,6 @@
 import { useBoolean } from '@/hooks';
 import { StatusBar } from 'native-base';
-import { LegacyRef, useRef } from 'react';
+import { LegacyRef } from 'react';
 import { StyleProp } from 'react-native';
 import {
   FastImageProps,

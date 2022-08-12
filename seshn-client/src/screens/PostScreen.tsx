@@ -7,24 +7,24 @@ import { useEffect, useState } from 'react';
 interface Props extends StackScreenProps<BaseStackParamList, 'Post'> {}
 
 export const PostScreen = ({ navigation, route }: Props) => {
-  const [activeSlideIndex, setActiveSlideIndex] = useState(
-    route.params.initialIndex
-  );
+  const { assets, initialIndex } = route.params;
+
+  const [activeSlideIndex, setActiveSlideIndex] = useState(initialIndex);
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Text fontWeight="bold" fontSize={18} alignSelf="flex-end" mr={4}>
-          {activeSlideIndex + 1} of {route.params.assets.length}
+          {activeSlideIndex + 1} of {assets.length}
         </Text>
       ),
     });
-  }, [activeSlideIndex]);
+  }, [activeSlideIndex, navigation, assets.length]);
 
   return (
     <MainLayout centered={false} safeAreaTop>
       <PostCarousel
-        assets={route.params.assets}
+        assets={assets}
         activeSlideIndex={activeSlideIndex}
         setActiveSlideIndex={setActiveSlideIndex}
       />
