@@ -35,6 +35,7 @@ export const PostCarousel = ({
           asset={item}
           isActive={assets[activeSlideIndex].id === item.id}
           resizeMode="contain"
+          zoomable
         />
       )}
       onSnapToItem={setActiveSlideIndex}

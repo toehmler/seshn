@@ -2,7 +2,7 @@ import { Asset, MediaType } from '@/types';
 import { Image } from 'native-base';
 import { useWindowDimensions } from 'react-native';
 import { ResizeMode } from 'react-native-fast-image';
-import { Video } from '../common';
+import { LightboxImage, Video } from '../common';
 
 interface Props {
   asset: Asset;
@@ -11,6 +11,7 @@ interface Props {
   height?: number;
   thumbnail?: boolean;
   resizeMode?: ResizeMode;
+  zoomable?: boolean;
 }
 
 export const PostAsset = ({
@@ -20,19 +21,29 @@ export const PostAsset = ({
   height,
   thumbnail = false,
   resizeMode = 'cover',
+  zoomable = false,
 }: Props) => {
   const { width: screenWidth } = useWindowDimensions();
 
   return asset.type === MediaType.IMAGE ? (
-    <Image
-      source={asset.uri}
-      w={width || screenWidth}
-      h={height || screenWidth}
-      alt="image"
-      resizeMode={resizeMode}
-    />
+    zoomable ? (
+      <LightboxImage
+        source={asset.uri}
+        imageStyle={{
+          width: width || screenWidth,
+          height: height || screenWidth,
+        }}
+      />
+    ) : (
+      <Image
+        source={asset.uri}
+        w={width || screenWidth}
+        h={height || screenWidth}
+        alt="image"
+        resizeMode={resizeMode}
+      />
+    )
   ) : (
-    // )
     <Video
       source={asset.uri}
       width={width || screenWidth}

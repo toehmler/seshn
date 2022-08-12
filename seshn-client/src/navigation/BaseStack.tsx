@@ -8,7 +8,7 @@ import { FeedStackParamList } from './FeedStack';
 import { ProfileStackParamList } from './ProfileStack';
 import { LibraryStackParamList } from './LibraryStack';
 import { Asset } from '@/types';
-import { GoBackButton } from '@/components';
+import { CustomHeader, GoBackButton } from '@/components';
 
 export type BaseStackParamList = {
   Authorized: NavigatorScreenParams<TabParamList>;
@@ -60,7 +60,17 @@ export const BaseStack = () => {
           <Stack.Screen
             name="Post"
             component={PostScreen}
-            options={{ headerShown: false, presentation: 'transparentModal' }}
+            options={{
+              header: ({ options }) => (
+                <CustomHeader
+                  options={{
+                    ...options,
+                    headerLeft: () => <GoBackButton />,
+                    headerTitle: 'Post',
+                  }}
+                />
+              ),
+            }}
           />
         </>
       ) : (
