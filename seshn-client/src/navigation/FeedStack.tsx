@@ -1,4 +1,4 @@
-import { CustomHeader, GoBackButton, SearchButton } from '@/components';
+import { CustomHeader, GoBackButton } from '@/components';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FeedScreen, SearchScreen } from '@/screens';
 
@@ -22,7 +22,6 @@ export const FeedStack = () => {
         component={FeedScreen}
         options={{
           headerTitle: 'Your Feed',
-          headerLeft: () => <SearchButton />,
           // headerRight is set in FeedScreen
         }}
       />
