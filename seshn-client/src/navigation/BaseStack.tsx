@@ -8,7 +8,7 @@ import { FeedStackParamList } from './FeedStack';
 import { ProfileStackParamList } from './ProfileStack';
 import { LibraryStackParamList } from './LibraryStack';
 import { Asset } from '@/types';
-import { CloseButton, CustomHeader, GoBackButton } from '@/components';
+import { CloseButton, CustomHeader } from '@/components';
 
 export type BaseStackParamList = {
   Authorized: NavigatorScreenParams<TabParamList>;

@@ -1,5 +1,4 @@
 export * from './CloseButton';
-export * from './ConditionalWrapper';
 export * from './CustomHeader';
 export * from './GoBackButton';
 export * from './HeaderButton';
