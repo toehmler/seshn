@@ -1,8 +1,8 @@
-import { MainLayout, PostCarousel } from '@/components';
+import { MainLayout, PostGallery } from '@/components';
 import { BaseStackParamList } from '@/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Text } from 'native-base';
 import { useEffect, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Props extends StackScreenProps<BaseStackParamList, 'Post'> {}
 
@@ -13,18 +13,17 @@ export const PostScreen = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Text fontWeight="bold" fontSize={18} alignSelf="flex-end" mr={4}>
-          {activeSlideIndex + 1} of {assets.length}
-        </Text>
-      ),
+      headerTitle: `${activeSlideIndex + 1} of ${assets.length}`,
     });
   }, [activeSlideIndex, navigation, assets.length]);
 
+  const { top } = useSafeAreaInsets();
+
   return (
-    <MainLayout centered={false} safeAreaTop>
-      <PostCarousel
+    <MainLayout backgroundColor="black" marginTop={-top}>
+      <PostGallery
         assets={assets}
+        initialIndex={initialIndex}
         activeSlideIndex={activeSlideIndex}
         setActiveSlideIndex={setActiveSlideIndex}
       />

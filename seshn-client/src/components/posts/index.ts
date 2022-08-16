@@ -1,2 +1,2 @@
 export * from './PostList';
-export * from './PostCarousel';
+export * from './PostGallery';

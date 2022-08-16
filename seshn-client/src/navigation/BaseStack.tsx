@@ -8,7 +8,7 @@ import { FeedStackParamList } from './FeedStack';
 import { ProfileStackParamList } from './ProfileStack';
 import { LibraryStackParamList } from './LibraryStack';
 import { Asset } from '@/types';
-import { CustomHeader, GoBackButton } from '@/components';
+import { CloseButton, CustomHeader, GoBackButton } from '@/components';
 
 export type BaseStackParamList = {
   Authorized: NavigatorScreenParams<TabParamList>;
@@ -61,12 +61,23 @@ export const BaseStack = () => {
             name="Post"
             component={PostScreen}
             options={{
+              presentation: 'transparentModal',
               header: ({ options }) => (
                 <CustomHeader
                   options={{
                     ...options,
-                    headerLeft: () => <GoBackButton />,
-                    headerTitle: 'Post',
+                    headerLeft: () => <CloseButton color={colors.white} />,
+                    headerStyle: {
+                      backgroundColor: colors.black,
+                      borderBottomWidth: 0,
+                      borderBottomColor: colors.black,
+                      shadowColor: 'transparent',
+                    },
+                    headerTitleStyle: {
+                      color: colors.white,
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                    },
                   }}
                 />
               ),

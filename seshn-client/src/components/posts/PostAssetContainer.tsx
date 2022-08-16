@@ -14,8 +14,8 @@ const { width: fullWidth } = Dimensions.get('screen');
 const widthAccountingForBorders = fullWidth - 2;
 const halfWidth = widthAccountingForBorders / 2;
 
-const getDimensionProps = (numAssets: number, isLastVisibleAsset: boolean) => {
-  if (isLastVisibleAsset) {
+const getDimensionProps = (numAssets: number, isFullWidth: boolean) => {
+  if (isFullWidth) {
     return {
       width: fullWidth,
       height: halfWidth,
@@ -86,6 +86,11 @@ export const PostAssetContainer = ({ assets }: Props) => {
             index,
             assets.length === 1 || item.id === wideAsset?.id
           )}
+          h={
+            item.id === wideAsset?.id || assets.length > 2
+              ? halfWidth
+              : fullWidth
+          }
           onPress={() =>
             navigation.navigate('Post', { assets, initialIndex: index })
           }
