@@ -1,21 +1,18 @@
-import { Sport } from '@/types';
+import { formatPostDate } from '@/helpers';
+import { User } from '@/types';
 import { HStack, Heading } from 'native-base';
-import { SportBadge } from '../common';
+import { UserAvatar } from '../profile';
 
 interface Props {
-  title: string;
-  sports: Sport[];
+  user: User;
+  date: string;
 }
 
-export const PostHeader = ({ title, sports }: Props) => {
+export const PostHeader = ({ user, date }: Props) => {
   return (
-    <HStack justifyContent="space-between" px={5} alignItems="center">
-      <Heading>{title}</Heading>
-      <HStack space={3}>
-        {sports.map((sport) => (
-          <SportBadge key={sport} sport={sport} />
-        ))}
-      </HStack>
+    <HStack justifyContent="space-between" alignItems="flex-end" px={2}>
+      <UserAvatar user={user} circle size="12" />
+      <Heading size="md">{formatPostDate(date)}</Heading>
     </HStack>
   );
 };
