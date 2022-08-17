@@ -15,15 +15,16 @@ export const LoginScreen = () => {
   const dispatch = useAppDispatch();
 
   const handleLogin = () => {
-    // dispatch(setAccessToken('a'));
-    login((accessToken) => {
-      dispatch(setAccessToken(accessToken));
-      console.log(accessToken);
+    login({
+      onSuccess: (accessToken) => {
+        dispatch(setAccessToken(accessToken));
+        console.log(accessToken);
+      },
     });
   };
 
   return (
-    <MainLayout>
+    <MainLayout backgroundColor={useColorModeValue('white', 'black')}>
       <VStack w="90%" maxW="290" space={10}>
         <Center>
           <Heading
