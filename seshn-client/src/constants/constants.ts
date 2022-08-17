@@ -38,11 +38,11 @@ export const POSTS = [
         type: MediaType.IMAGE,
         uri: require('@/assets/images/image-4.jpg'),
       },
-      {
-        id: 'video-1',
-        type: MediaType.VIDEO,
-        uri: require('@/assets/videos/video-1.mp4'),
-      },
+      // {
+      //   id: 'video-1',
+      //   type: MediaType.VIDEO,
+      //   uri: require('@/assets/videos/video-1.mp4'),
+      // },
     ],
   },
   {
@@ -73,11 +73,11 @@ export const POSTS = [
       //   type: MediaType.IMAGE,
       //   uri: require('@/assets/images/image-4.jpg'),
       // },
-      // {
-      //   id: 'video-2',
-      //   type: MediaType.VIDEO,
-      //   uri: require('@/assets/videos/video-2.mp4'),
-      // },
+      {
+        id: 'video-2',
+        type: MediaType.VIDEO,
+        uri: require('@/assets/videos/video-2.mp4'),
+      },
     ],
   },
   {
@@ -128,26 +128,26 @@ export const POSTS = [
         type: MediaType.IMAGE,
         uri: require('@/assets/images/image-1.jpg'),
       },
-      // {
-      //   id: '2',
-      //   type: MediaType.IMAGE,
-      //   uri: require('@/assets/images/image-2.jpg'),
-      // },
-      // {
-      //   id: '3',
-      //   type: MediaType.IMAGE,
-      //   uri: require('@/assets/images/image-3.jpg'),
-      // },
+      {
+        id: '2',
+        type: MediaType.IMAGE,
+        uri: require('@/assets/images/image-2.jpg'),
+      },
+      {
+        id: '3',
+        type: MediaType.IMAGE,
+        uri: require('@/assets/images/image-3.jpg'),
+      },
       // {
       //   id: '4',
       //   type: MediaType.IMAGE,
       //   uri: require('@/assets/images/image-4.jpg'),
       // },
-      // {
-      //   id: 'video-4',
-      //   type: MediaType.VIDEO,
-      //   uri: require('@/assets/videos/video-4.mp4'),
-      // },
+      {
+        id: 'video-4',
+        type: MediaType.VIDEO,
+        uri: require('@/assets/videos/video-4.mp4'),
+      },
     ],
   },
 ];

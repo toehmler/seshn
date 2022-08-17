@@ -1,122 +1,125 @@
-import { Asset } from '@/types';
+import { Asset, MediaType } from '@/types';
 import { useNavigation } from '@react-navigation/native';
-import { Box, FlatList, Pressable, Text, useColorModeValue } from 'native-base';
-import { Dimensions } from 'react-native';
-import { PostAsset } from './PostAsset';
+import { Divider, FlatList, useColorModeValue } from 'native-base';
+import { useCallback } from 'react';
+import { useWindowDimensions } from 'react-native';
+import { AssetTile } from './AssetTile';
+import { SingleAssetPost } from './SingleAssetPost';
 
 interface Props {
   assets: Asset[];
 }
 
-const { width: fullWidth } = Dimensions.get('screen');
-
-// need to be careful to account for border widths
-const widthAccountingForBorders = fullWidth - 2;
-const halfWidth = widthAccountingForBorders / 2;
-
-const getDimensionProps = (numAssets: number, isFullWidth: boolean) => {
-  if (isFullWidth) {
-    return {
-      width: fullWidth,
-      height: halfWidth,
-    };
-  } else if (numAssets === 1) {
-    return {
-      width: fullWidth,
-      height: widthAccountingForBorders,
-    };
-  } else if (numAssets === 2) {
-    return {
-      width: halfWidth,
-      height: widthAccountingForBorders,
-    };
-  } else {
-    return {
-      width: halfWidth,
-      height: halfWidth,
-    };
+/*
+  calculates the number of columns for a post
+  based on the presence of a video and the total number of assets
+*/
+const getNumColumns = (numAssets: number, hasVideo: boolean) => {
+  switch (numAssets) {
+    case 1:
+      return 1;
+    case 2:
+      return hasVideo ? 1 : 2;
+    case 3:
+      return 2;
+    default:
+      return hasVideo ? 3 : 2;
   }
 };
 
-const getBorderProps = (index: number, isFullWidth: boolean) => {
-  if (isFullWidth) {
-    return {
-      borderTopWidth: 1,
-      borderBottomWidth: 1,
-      borderLeftWidth: 0,
-      borderRightWidth: 0,
-    };
-  } else if (index % 2) {
-    return {
-      borderTopWidth: 1,
-      borderBottomWidth: 1,
-      borderLeftWidth: 1,
-      borderRightWidth: 0,
-    };
-  } else {
-    return {
-      borderTopWidth: 1,
-      borderBottomWidth: 1,
-      borderLeftWidth: 0,
-      borderRightWidth: 1,
-    };
+/*
+  calculates dimensions and borderWidths for a tile
+  based on the presence of a video and the total number of assets
+*/
+const getTileProps = (
+  numAssets: number,
+  hasVideo: boolean,
+  screenWidth: number,
+  index: number
+) => {
+  switch (numAssets) {
+    case 1:
+      return { height: screenWidth, width: screenWidth };
+    case 2:
+      return {
+        height: hasVideo ? screenWidth / 2 : screenWidth,
+        width: hasVideo ? screenWidth : screenWidth / 2,
+        borderLeftWidth: !hasVideo && index === 1 ? 2 : 0,
+        borderRightWidth: !hasVideo && index === 0 ? 2 : 0,
+      };
+    case 3:
+      return {
+        height: screenWidth / 2,
+        width: index === 2 ? screenWidth : screenWidth / 2,
+        borderLeftWidth: index === 1 ? 2 : 0,
+        borderRightWidth: index === 0 ? 2 : 0,
+        borderBottomWidth: hasVideo ? 0 : [0, 1].includes(index) ? 4 : 0,
+      };
+    default:
+      return {
+        height: hasVideo ? screenWidth / 3 : screenWidth / 2,
+        width: hasVideo ? screenWidth / 3 : screenWidth / 2,
+        borderLeftWidth: (hasVideo ? [1, 2] : [1, 3]).includes(index) ? 2 : 0,
+        borderRightWidth: (hasVideo ? [0, 1] : [0, 2]).includes(index) ? 2 : 0,
+        borderBottomWidth: hasVideo ? 0 : [0, 1].includes(index) ? 4 : 0,
+      };
   }
 };
 
 export const PostAssetContainer = ({ assets }: Props) => {
-  const borderColor = useColorModeValue('bgLight', 'bgDark');
-
   const navigation = useNavigation();
 
-  const wideAsset: Asset | null =
-    assets.length === 3 ? assets[assets.length - 1] : null;
+  const { width } = useWindowDimensions();
 
-  const visibleAssets = assets.slice(0, 4);
+  const backgroundColor = useColorModeValue('bgLight', 'bgDark');
 
-  const lastVisibleAsset = assets.length > 3 ? assets[3] : null;
+  const video = assets.find(({ type }) => type === MediaType.VIDEO);
+  const hasVideo = !!video;
 
-  return (
+  const imageAssets = assets.filter(({ type }) => type === MediaType.IMAGE);
+
+  const rearrangedAssets = hasVideo ? [video, ...imageAssets] : assets;
+
+  // always include full-width video at top of post if one exists
+  const PostVideo = useCallback(
+    () =>
+      hasVideo ? (
+        <AssetTile
+          asset={rearrangedAssets[0]}
+          index={0}
+          allAssets={rearrangedAssets}
+          height={hasVideo ? width / 2 : width}
+          width={hasVideo ? width : width / 2}
+          borderBottomWidth={8}
+        />
+      ) : null,
+    [hasVideo, width, navigation] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  return assets.length === 1 ? (
+    <SingleAssetPost asset={assets[0]} />
+  ) : (
     <FlatList
-      data={visibleAssets}
-      numColumns={2}
-      renderItem={({ item, index }) => (
-        <Pressable
-          borderColor={borderColor}
-          {...getBorderProps(
-            index,
-            assets.length === 1 || item.id === wideAsset?.id
-          )}
-          h={
-            item.id === wideAsset?.id || assets.length > 2
-              ? halfWidth
-              : fullWidth
-          }
-          onPress={() =>
-            navigation.navigate('Post', { assets, initialIndex: index })
-          }
-        >
-          <PostAsset
-            asset={item}
-            {...getDimensionProps(assets.length, item.id === wideAsset?.id)}
-            thumbnail={item.id === lastVisibleAsset?.id}
-          />
-          {item.id === lastVisibleAsset?.id && (
-            <Box
-              w={fullWidth / 2}
-              h={fullWidth / 2}
-              backgroundColor="black:alpha.50"
-              position="absolute"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Text color="lightText" fontSize={24} fontWeight="bold">
-                + {assets.length - 3}
-              </Text>
-            </Box>
-          )}
-        </Pressable>
-      )}
+      data={imageAssets.slice(0, hasVideo ? 3 : 4)}
       keyExtractor={(item) => item.id}
+      numColumns={getNumColumns(assets.length, hasVideo)}
+      ItemSeparatorComponent={() => (
+        <Divider thickness={2} bg={backgroundColor} />
+      )}
+      renderItem={({ item, index }) => (
+        <AssetTile
+          asset={item}
+          index={hasVideo ? index + 1 : index}
+          allAssets={rearrangedAssets}
+          {...getTileProps(assets.length, hasVideo, width, index)}
+          additionalAssets={
+            assets.length > 4 && index === (hasVideo ? 2 : 3)
+              ? rearrangedAssets.length - 3
+              : 0
+          }
+        />
+      )}
+      ListHeaderComponent={PostVideo}
     />
   );
 };
