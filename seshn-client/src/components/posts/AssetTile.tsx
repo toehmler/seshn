@@ -1,6 +1,6 @@
 import { Asset, MediaType } from '@/types';
 import { useNavigation } from '@react-navigation/native';
-import { Circle, IconButton, Pressable, useColorModeValue } from 'native-base';
+import { Circle, Pressable, useColorModeValue } from 'native-base';
 import { Ionicon } from '../common';
 import { MoreImagesOverlay } from './MoreImagesOverlay';
 import { PostAsset } from './PostAsset';
