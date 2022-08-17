@@ -1,6 +1,7 @@
-import { Asset } from '@/types';
+import { Asset, MediaType } from '@/types';
 import { useNavigation } from '@react-navigation/native';
-import { Pressable, useColorModeValue } from 'native-base';
+import { Circle, IconButton, Pressable, useColorModeValue } from 'native-base';
+import { Ionicon } from '../common';
 import { MoreImagesOverlay } from './MoreImagesOverlay';
 import { PostAsset } from './PostAsset';
 
@@ -45,14 +46,21 @@ export const AssetTile = ({
       borderLeftWidth={borderLeftWidth}
       borderRightWidth={borderRightWidth}
       borderColor={useColorModeValue('bgLight', 'bgDark')}
+      justifyContent="center"
+      alignItems="center"
     >
-      <PostAsset asset={asset} height={height} width={width} />
+      <PostAsset asset={asset} height={height} width={width} thumbnail />
       {additionalAssets > 0 && (
         <MoreImagesOverlay
           height={height}
           width={width}
           number={additionalAssets}
         />
+      )}
+      {asset.type === MediaType.VIDEO && (
+        <Circle position="absolute" bg="black:alpha.80" size="56px" pl="1">
+          <Ionicon name="play" color="white" size="3xl" />
+        </Circle>
       )}
     </Pressable>
   );

@@ -1,6 +1,7 @@
 import { MainLayout, PostGallery } from '@/components';
 import { BaseStackParamList } from '@/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
+import { StatusBar } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -21,6 +22,7 @@ export const PostScreen = ({ navigation, route }: Props) => {
 
   return (
     <MainLayout backgroundColor="black" marginTop={-top}>
+      <StatusBar hidden />
       <PostGallery
         assets={assets}
         initialIndex={initialIndex}
