@@ -1,4 +1,4 @@
-import { Box, Text } from 'native-base';
+import { Box, Text, useColorModeValue } from 'native-base';
 
 interface Props {
   width: number;
@@ -15,6 +15,8 @@ export const MoreImagesOverlay = ({ width, height, number }: Props) => {
       position="absolute"
       justifyContent="center"
       alignItems="center"
+      borderLeftWidth={1}
+      borderLeftColor={useColorModeValue('bgLight', 'bgDark')}
     >
       <Text color="lightText" fontSize={24} fontWeight="bold">
         + {number}

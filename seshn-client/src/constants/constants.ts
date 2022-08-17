@@ -138,11 +138,11 @@ export const POSTS = [
         type: MediaType.IMAGE,
         uri: require('@/assets/images/image-3.jpg'),
       },
-      // {
-      //   id: '4',
-      //   type: MediaType.IMAGE,
-      //   uri: require('@/assets/images/image-4.jpg'),
-      // },
+      {
+        id: '4',
+        type: MediaType.IMAGE,
+        uri: require('@/assets/images/image-4.jpg'),
+      },
       {
         id: 'video-4',
         type: MediaType.VIDEO,
