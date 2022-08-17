@@ -6,13 +6,13 @@ interface Props {
 }
 
 export const AddMediaButton = ({ onPress }: Props) => {
-  const systemColor = useColorModeValue('black', 'white');
+  const systemColor = useColorModeValue('darkText', 'lightText');
 
   return (
     <Button
       leftIcon={<Ionicon name="add" color={systemColor} size="xl" />}
       _pressed={{
-        bg: 'gray.500:alpha.20',
+        bg: 'primary.500:alpha.20',
       }}
       _text={{
         color: systemColor,

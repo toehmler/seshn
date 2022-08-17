@@ -27,7 +27,7 @@ export const BottomTabs = () => {
 
   const [backgroundColor, tabBarInactiveTintColor] = useColorModeValue(
     [colors.bgLight, colors.dark[400]],
-    [colors.bgDark, colors.dark[600]]
+    [colors.bgDark, colors.dark[700]]
   );
 
   const dispatch = useAppDispatch();
