@@ -1,34 +1,42 @@
-import { now } from '@/helpers';
-import { Location } from '@/types';
+import { InProgressSession, Location } from '@/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface SessionState {
   tracking?: boolean;
   startTimestamp?: number;
   duration: 0;
-  path: Location[];
+  currentSession?: InProgressSession;
+  showUser?: boolean;
 }
 
 const initialState: SessionState = {
   tracking: false,
   startTimestamp: undefined,
   duration: 0,
-  path: [],
+  currentSession: undefined,
+  showUser: true,
 };
 
 export const sessionSlice = createSlice({
   name: 'session',
   initialState,
   reducers: {
-    startTracking: (state: SessionState) => {
+    startTracking: (
+      state: SessionState,
+      action: PayloadAction<InProgressSession>
+    ) => {
       state.tracking = true;
       state.startTimestamp = Date.now();
+      state.currentSession = action.payload;
+    },
+    resumeTracking: (state: SessionState) => {
+      state.tracking = true;
     },
     stopTracking: (state: SessionState) => {
       state.tracking = false;
     },
     addPathPoint: (state: SessionState, action: PayloadAction<Location>) => {
-      state.path.push(action.payload);
+      state.currentSession?.path.push(action.payload);
     },
     updateDuration: (state: SessionState, action: PayloadAction<number>) => {
       if (state.tracking) {
@@ -39,7 +47,10 @@ export const sessionSlice = createSlice({
       state.tracking = false;
       state.startTimestamp = undefined;
       state.duration = 0;
-      state.path = [];
+      state.currentSession = undefined;
+    },
+    toggleShowUser: (state: SessionState) => {
+      state.showUser = !state.showUser;
     },
   },
 });
@@ -47,7 +58,9 @@ export const sessionSlice = createSlice({
 export const {
   startTracking,
   stopTracking,
+  resumeTracking,
   addPathPoint,
   updateDuration,
   resetSession,
+  toggleShowUser,
 } = sessionSlice.actions;

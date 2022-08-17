@@ -1,4 +1,4 @@
-import { LatLng } from 'react-native-maps';
+import { Address } from 'react-native-maps';
 
 export enum Sport {
   SKIING = 'Skiing',
@@ -44,4 +44,18 @@ export interface Post {
 export interface Location {
   latitude: number;
   longitude: number;
+}
+
+export interface InProgressSession {
+  location: Location;
+  address: Address;
+  path: Location[];
+}
+
+export interface Session extends InProgressSession {
+  id: string;
+  userId: string;
+  timestamp: number;
+  assets: Asset[];
+  mapUri?: string;
 }

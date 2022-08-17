@@ -3,36 +3,13 @@ import { useLayoutEffect, useState } from 'react';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '@/navigation';
 import { getAssetsFromDevice } from '@/helpers';
-import { Asset, MediaType } from '@/types';
-
-const videos = [
-  require('@/assets/videos/video-1.mp4'),
-  require('@/assets/videos/video-2.mp4'),
-  require('@/assets/videos/video-3.mp4'),
-  require('@/assets/videos/video-4.mp4'),
-];
-
-const images = [
-  require('@/assets/images/image-1.jpg'),
-  require('@/assets/images/image-2.jpg'),
-  require('@/assets/images/image-3.jpg'),
-  require('@/assets/images/image-4.jpg'),
-];
+import { Asset } from '@/types';
+import { useAppSelector } from '@/hooks';
 
 interface Props extends BottomTabScreenProps<TabParamList, 'Library'> {}
 
 export const LibraryScreen = ({ navigation }: Props) => {
-  const [assets, setAssets] = useState<Asset[]>(
-    images
-      .map((img) => ({ type: MediaType.IMAGE, uri: img, id: `image-${img}` }))
-      .concat(
-        videos.map((video) => ({
-          type: MediaType.VIDEO,
-          uri: video,
-          id: `video-${video}`,
-        }))
-      )
-  );
+  const [assets, setAssets] = useState<Asset[]>([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -47,9 +24,11 @@ export const LibraryScreen = ({ navigation }: Props) => {
     });
   }, [navigation, assets]);
 
+  const { sessions } = useAppSelector((state) => state.library);
+
   return (
     <MainLayout>
-      <Library assets={assets} />
+      <Library sessions={sessions} />
     </MainLayout>
   );
 };

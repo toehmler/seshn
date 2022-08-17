@@ -1,4 +1,4 @@
-import { compareDesc, parse } from 'date-fns';
+import { compareDesc, format, parse } from 'date-fns';
 import { Post } from '@/types';
 
 export const DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss';
@@ -13,8 +13,8 @@ export const sortPostsByRecent = (posts: Post[]): Post[] => {
   });
 };
 
-export const now = (): number => {
-  return Date.now();
+export const formatTimestamp = (timestamp: number): string => {
+  return format(new Date(timestamp), DATETIME_FORMAT);
 };
 
 const pad = (num: number, size = 2): string => {
