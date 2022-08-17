@@ -4,6 +4,7 @@ import {
   getHeaderTitle,
 } from '@react-navigation/elements';
 import { useColorModeValue, useTheme } from 'native-base';
+import { Logo } from './Logo';
 
 interface Props {
   options: HeaderOptions;
@@ -24,7 +25,7 @@ export const CustomHeader = ({ options }: Props) => {
         fontWeight: 'bold',
       }}
       headerLeftContainerStyle={{
-        paddingLeft: 5,
+        paddingLeft: 10,
         paddingBottom: 5,
       }}
       headerRightContainerStyle={{
@@ -34,6 +35,7 @@ export const CustomHeader = ({ options }: Props) => {
       headerTitleContainerStyle={{
         paddingBottom: 5,
       }}
+      headerLeft={() => <Logo />}
       {...options}
     />
   );

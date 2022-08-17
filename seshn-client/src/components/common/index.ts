@@ -4,6 +4,7 @@ export * from './GoBackButton';
 export * from './HeaderButton';
 export * from './Ionicon';
 export * from './LightboxImage';
+export * from './Logo';
 export * from './MainLayout';
 export * from './SearchBar';
 export * from './Spacer';
