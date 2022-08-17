@@ -15,11 +15,10 @@ export const LoginScreen = () => {
   const dispatch = useAppDispatch();
 
   const handleLogin = () => {
-    dispatch(setAccessToken('a'));
-    // login((accessToken) => {
-    //   dispatch(setAccessToken(accessToken));
-    //   console.log(accessToken);
-    // });
+    login((accessToken) => {
+      dispatch(setAccessToken(accessToken));
+      console.log(accessToken);
+    });
   };
 
   return (

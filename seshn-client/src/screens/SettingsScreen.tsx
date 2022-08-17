@@ -8,7 +8,6 @@ export const SettingsScreen = () => {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    // dispatch(setAccessToken());
     logout(() => dispatch(setAccessToken()));
   };
 
