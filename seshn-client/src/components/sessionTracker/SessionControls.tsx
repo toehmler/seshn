@@ -101,29 +101,30 @@ export const SessionControls = () => {
       </Box>
       <MapButton
         colorScheme={tracking ? 'red' : 'green'}
-        label={
-          tracking ? 'Stop Session' : duration > 0 ? 'Resume' : 'Start Session'
-        }
-        placement="bottom-left"
+        label={tracking ? 'Stop' : duration > 0 ? 'Resume' : 'Start'}
+        placement="bottom-right"
         onPress={toggleTrackingState}
         bottom={bottom}
+        iconName={tracking ? 'stop' : 'play'}
       />
       <MapButton
         colorScheme="primary"
-        label="Save Session"
+        label="Save"
         onPress={handleSave}
         alignSelf="flex-end"
-        right={width / 2 - 55}
+        right={width / 2 - 50}
         bottom={bottom}
         disabled={duration === 0}
+        iconName="save"
       />
       <MapButton
         colorScheme="red"
         label="Reset"
-        placement="bottom-right"
+        placement="bottom-left"
         onPress={handleReset}
         bottom={bottom}
         disabled={duration === 0}
+        iconName="trash"
       />
     </>
   );

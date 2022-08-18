@@ -80,7 +80,7 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
     <>
       <MapButton
         colorScheme="green"
-        label="Save Session"
+        label="Save"
         placement="bottom-right"
         onPress={async () => {
           if (session) {
@@ -89,6 +89,7 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
           navigation.goBack();
         }}
         bottom={bottom}
+        iconName="save"
       />
       <MapButton
         colorScheme="red"
@@ -96,6 +97,7 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
         placement="bottom-left"
         onPress={() => navigation.goBack()}
         bottom={bottom}
+        iconName="close"
       />
     </>
   );
