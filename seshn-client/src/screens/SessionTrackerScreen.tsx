@@ -1,11 +1,8 @@
 import { SessionControls, SessionTrackerMap } from '@/components';
 import { getCurrentLocation } from '@/helpers';
-import { useEffect, useRef, useState } from 'react';
-import MapView from 'react-native-maps';
+import { useEffect, useState } from 'react';
 
 export const SessionTrackerScreen = () => {
-  const mapRef = useRef<MapView>(null);
-
   const [initialCoords, setInitialCoords] = useState({
     latitude: 0,
     longitude: 0,
@@ -21,8 +18,8 @@ export const SessionTrackerScreen = () => {
 
   return (
     <>
-      <SessionTrackerMap mapRef={mapRef} initialCoords={initialCoords} />
-      <SessionControls mapRef={mapRef} />
+      <SessionTrackerMap initialCoords={initialCoords} />
+      <SessionControls />
     </>
   );
 };

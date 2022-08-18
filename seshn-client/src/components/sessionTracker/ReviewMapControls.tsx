@@ -25,9 +25,13 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
   const saveSession = async (currSession: InProgressSession) => {
     try {
       const snapshot = await mapRef.current?.takeSnapshot({});
+      const currentAddress = await mapRef.current?.addressForCoordinate(
+        currSession.location
+      );
       dispatch(
         addSession({
           ...currSession,
+          address: currentAddress,
           id: `${currSession.startTimestamp}`,
           userId: '0',
           assets: [],

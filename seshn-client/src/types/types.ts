@@ -49,7 +49,6 @@ export interface Location {
 export interface InProgressSession {
   startTimestamp: number;
   location: Location;
-  address: Address;
   path: Location[];
 }
 
@@ -58,4 +57,5 @@ export interface Session extends InProgressSession {
   userId: string;
   assets: Asset[];
   mapUri?: string;
+  address?: Address;
 }

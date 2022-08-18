@@ -18,17 +18,14 @@ import {
 } from '@/redux';
 import { useNavigation } from '@react-navigation/native';
 import { Box, Text } from 'native-base';
-import { RefObject } from 'react';
-import MapView from 'react-native-maps';
+import { useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MapButton } from './MapButton';
 
-interface Props {
-  mapRef: RefObject<MapView>;
-}
+export const SessionControls = () => {
+  const { bottom, top } = useSafeAreaInsets();
 
-export const SessionControls = ({ mapRef }: Props) => {
-  const { bottom } = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
 
   const navigation = useNavigation();
 
@@ -40,46 +37,44 @@ export const SessionControls = ({ mapRef }: Props) => {
 
   useInterval(() => dispatch(updateDuration(10)), tracking ? 10 : null);
 
-  const handleReset = useActionSheet([
-    {
-      text: 'Save Session',
-      action: async () => {
-        const currentLocation = await getCurrentLocation();
-        const region = calculateRegionFromCoordinates(
-          currentSession?.path || []
-        ) || {
-          ...currentLocation,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        };
-        navigation.navigate('ReviewMap', { region });
+  const handleReset = useActionSheet(
+    [
+      {
+        text: 'Reset Session',
+        action: () => dispatch(resetSession()),
+        destructive: true,
       },
-    },
+    ],
     {
-      text: 'Reset without saving',
-      action: () => dispatch(resetSession()),
-      destructive: true,
-    },
-  ]);
+      title: 'Are you sure you want to reset your session?',
+      message: "The current session won't be saved.",
+    }
+  );
+
+  const handleSave = async () => {
+    const currentLocation = await getCurrentLocation();
+    const region = calculateRegionFromCoordinates(
+      currentSession?.path || []
+    ) || {
+      ...currentLocation,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
+    navigation.navigate('ReviewMap', { region });
+  };
 
   const toggleTrackingState = async () => {
     if (tracking) {
       dispatch(stopTracking());
     } else if (duration === 0) {
       const currentLocation = await getCurrentLocation();
-      const currentAddress = await mapRef.current?.addressForCoordinate(
-        currentLocation
+      dispatch(
+        startTracking({
+          startTimestamp: Date.now(),
+          location: currentLocation,
+          path: [],
+        })
       );
-      if (currentAddress) {
-        dispatch(
-          startTracking({
-            startTimestamp: Date.now(),
-            location: currentLocation,
-            address: currentAddress,
-            path: [],
-          })
-        );
-      }
     } else {
       dispatch(resumeTracking());
     }
@@ -89,7 +84,7 @@ export const SessionControls = ({ mapRef }: Props) => {
     <>
       <Box
         position="absolute"
-        bottom={bottom + 5}
+        top={top}
         alignSelf="center"
         bgColor="black"
         px={2}
@@ -114,8 +109,17 @@ export const SessionControls = ({ mapRef }: Props) => {
         bottom={bottom}
       />
       <MapButton
-        colorScheme="blue"
-        label="Save / Reset"
+        colorScheme="primary"
+        label="Save Session"
+        onPress={handleSave}
+        alignSelf="flex-end"
+        right={width / 2 - 55}
+        bottom={bottom}
+        disabled={duration === 0}
+      />
+      <MapButton
+        colorScheme="red"
+        label="Reset"
         placement="bottom-right"
         onPress={handleReset}
         bottom={bottom}

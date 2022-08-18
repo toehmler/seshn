@@ -2,16 +2,14 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { addPathPoint } from '@/redux';
 import { Location } from '@/types';
 import { useColorModeValue, useTheme } from 'native-base';
-import { RefObject } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
 
 interface Props {
-  mapRef: RefObject<MapView>;
   initialCoords: Location;
 }
 
-export const SessionTrackerMap = ({ mapRef, initialCoords }: Props) => {
+export const SessionTrackerMap = ({ initialCoords }: Props) => {
   const { currentSession, tracking } = useAppSelector((state) => state.session);
 
   const dispatch = useAppDispatch();
@@ -20,7 +18,6 @@ export const SessionTrackerMap = ({ mapRef, initialCoords }: Props) => {
 
   return (
     <MapView
-      ref={mapRef}
       style={StyleSheet.absoluteFillObject}
       region={{
         ...initialCoords,

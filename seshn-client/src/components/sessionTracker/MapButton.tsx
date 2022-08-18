@@ -17,7 +17,6 @@ export const MapButton = ({
       placement={placement}
       p={3}
       w={110}
-      h={45}
       renderInPortal={false}
       shadow={5}
       {...rest}
