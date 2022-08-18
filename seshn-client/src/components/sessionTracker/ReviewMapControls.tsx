@@ -50,7 +50,9 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
           </Pressable>
         ),
       });
+      dispatch(resetSession());
     } catch (error) {
+      console.warn(error);
       toast.show({
         placement: 'top',
         id: 'save-session-error',
@@ -60,7 +62,7 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
               <HStack space={2}>
                 <Alert.Icon mt="1" />
                 <Text fontSize="md" color="coolGray.800">
-                  {`Error saving session: ${error}`}
+                  Error saving session
                 </Text>
               </HStack>
             </Alert>
@@ -80,7 +82,6 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
           if (session) {
             await saveSession(session);
           }
-          dispatch(resetSession());
           navigation.goBack();
         }}
         bottom={bottom}
