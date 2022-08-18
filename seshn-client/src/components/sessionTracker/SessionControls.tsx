@@ -1,4 +1,8 @@
-import { formatTimeSinceStart, getCurrentLocation } from '@/helpers';
+import {
+  calculateRegionFromCoordinates,
+  formatTimeSinceStart,
+  getCurrentLocation,
+} from '@/helpers';
 import {
   useActionSheet,
   useAppDispatch,
@@ -6,15 +10,13 @@ import {
   useInterval,
 } from '@/hooks';
 import {
-  addSession,
   resetSession,
   resumeTracking,
   startTracking,
   stopTracking,
-  toggleShowUser,
   updateDuration,
 } from '@/redux';
-import { InProgressSession } from '@/types';
+import { useNavigation } from '@react-navigation/native';
 import { Box, Text } from 'native-base';
 import { RefObject } from 'react';
 import MapView from 'react-native-maps';
@@ -28,67 +30,56 @@ interface Props {
 export const SessionControls = ({ mapRef }: Props) => {
   const { bottom } = useSafeAreaInsets();
 
-  const { tracking, duration, currentSession, startTimestamp, showUser } =
-    useAppSelector((state) => state.session);
+  const navigation = useNavigation();
+
+  const { tracking, duration, currentSession } = useAppSelector(
+    (state) => state.session
+  );
 
   const dispatch = useAppDispatch();
 
   useInterval(() => dispatch(updateDuration(10)), tracking ? 10 : null);
 
-  const saveSession = async (partialSession: InProgressSession) => {
-    const snapshot = await mapRef.current?.takeSnapshot({});
-    dispatch(
-      addSession({
-        ...partialSession,
-        timestamp: startTimestamp || Date.now(),
-        id: `${startTimestamp}`,
-        userId: '0',
-        assets: [],
-        mapUri: snapshot,
-      })
-    );
-  };
-
-  const handleReset = useActionSheet(
-    [
-      {
-        text: 'Save and reset',
-        action: async () => {
-          dispatch(toggleShowUser());
-          if (currentSession) {
-            await saveSession(currentSession);
-          }
-          dispatch(toggleShowUser());
-          dispatch(resetSession());
-        },
-      },
-      {
-        text: 'Reset without saving',
-        action: () => dispatch(resetSession()),
-        destructive: true,
-      },
-    ],
+  const handleReset = useActionSheet([
     {
-      title: 'Are you sure you want to reset your session?',
-      message: "The current session won't be saved",
-    }
-  );
+      text: 'Save Session',
+      action: async () => {
+        const currentLocation = await getCurrentLocation();
+        const region = calculateRegionFromCoordinates(
+          currentSession?.path || []
+        ) || {
+          ...currentLocation,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        };
+        navigation.navigate('ReviewMap', { region });
+      },
+    },
+    {
+      text: 'Reset without saving',
+      action: () => dispatch(resetSession()),
+      destructive: true,
+    },
+  ]);
 
   const toggleTrackingState = async () => {
-    const currentLocation = await getCurrentLocation();
-    const currentAddress = await mapRef.current?.addressForCoordinate(
-      currentLocation
-    );
     if (tracking) {
       dispatch(stopTracking());
-    } else if (duration === 0 && currentAddress) {
-      dispatch(
-        startTracking({
-          location: currentLocation,
-          address: currentAddress,
-          path: [],
-        })
+    } else if (duration === 0) {
+      const currentLocation = await getCurrentLocation();
+      const currentAddress = await mapRef.current?.addressForCoordinate(
+        currentLocation
       );
+      if (currentAddress) {
+        dispatch(
+          startTracking({
+            startTimestamp: Date.now(),
+            location: currentLocation,
+            address: currentAddress,
+            path: [],
+          })
+        );
+      }
     } else {
       dispatch(resumeTracking());
     }
@@ -124,7 +115,7 @@ export const SessionControls = ({ mapRef }: Props) => {
       />
       <MapButton
         colorScheme="blue"
-        label="Reset"
+        label="Save / Reset"
         placement="bottom-right"
         onPress={handleReset}
         bottom={bottom}

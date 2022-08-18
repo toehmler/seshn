@@ -1,33 +1,22 @@
-import { getCurrentLocation } from '@/helpers';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { addPathPoint } from '@/redux';
-import { RefObject, useEffect, useState } from 'react';
+import { Location } from '@/types';
+import { useColorModeValue, useTheme } from 'native-base';
+import { RefObject } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
 
 interface Props {
   mapRef: RefObject<MapView>;
+  initialCoords: Location;
 }
 
-export const Map = ({ mapRef }: Props) => {
-  const [initialCoords, setInitialCoords] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-
-  // get the user's current location on mount
-  useEffect(() => {
-    (async () => {
-      const loc = await getCurrentLocation();
-      setInitialCoords(loc);
-    })();
-  }, []);
-
-  const { currentSession, tracking, showUser } = useAppSelector(
-    (state) => state.session
-  );
+export const SessionTrackerMap = ({ mapRef, initialCoords }: Props) => {
+  const { currentSession, tracking } = useAppSelector((state) => state.session);
 
   const dispatch = useAppDispatch();
+
+  const { colors } = useTheme();
 
   return (
     <MapView
@@ -38,12 +27,13 @@ export const Map = ({ mapRef }: Props) => {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       }}
-      showsUserLocation={showUser}
+      showsUserLocation
       zoomEnabled={!tracking}
       rotateEnabled={!tracking}
       scrollEnabled={!tracking}
       followsUserLocation={tracking}
       loadingEnabled
+      loadingBackgroundColor={useColorModeValue(colors.bgLight, colors.bgDark)}
       onUserLocationChange={({ nativeEvent }) => {
         if (tracking && nativeEvent?.coordinate) {
           const { latitude, longitude } = nativeEvent.coordinate;

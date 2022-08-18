@@ -15,7 +15,6 @@ export const librarySlice = createSlice({
   reducers: {
     addSession: (state: LibraryState, action: PayloadAction<Session>) => {
       state.sessions.push(action.payload);
-      console.log(action.payload);
     },
   },
 });

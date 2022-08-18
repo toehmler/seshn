@@ -7,6 +7,7 @@ import { BottomTabs, TabParamList } from './BottomTabs';
 import { FeedStackParamList } from './FeedStack';
 import { ProfileStackParamList } from './ProfileStack';
 import { LibraryStackParamList } from './LibraryStack';
+import { SessionTrackerStackParamList } from './SessionTrackerStack';
 
 export type AuthStackParamList = {
   Authorized: NavigatorScreenParams<TabParamList>;
@@ -21,7 +22,8 @@ declare global {
         FeedStackParamList,
         TabParamList,
         ProfileStackParamList,
-        LibraryStackParamList {}
+        LibraryStackParamList,
+        SessionTrackerStackParamList {}
   }
 }
 

@@ -7,8 +7,6 @@ interface Props {
 }
 
 export const Library = ({ sessions }: Props) => {
-  console.log(sessions);
-
   const { width } = useWindowDimensions();
 
   return (

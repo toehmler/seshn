@@ -3,7 +3,6 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface SessionState {
   tracking?: boolean;
-  startTimestamp?: number;
   duration: 0;
   currentSession?: InProgressSession;
   showUser?: boolean;
@@ -11,7 +10,6 @@ interface SessionState {
 
 const initialState: SessionState = {
   tracking: false,
-  startTimestamp: undefined,
   duration: 0,
   currentSession: undefined,
   showUser: true,
@@ -26,7 +24,6 @@ export const sessionSlice = createSlice({
       action: PayloadAction<InProgressSession>
     ) => {
       state.tracking = true;
-      state.startTimestamp = Date.now();
       state.currentSession = action.payload;
     },
     resumeTracking: (state: SessionState) => {
@@ -45,12 +42,11 @@ export const sessionSlice = createSlice({
     },
     resetSession: (state: SessionState) => {
       state.tracking = false;
-      state.startTimestamp = undefined;
       state.duration = 0;
       state.currentSession = undefined;
     },
-    toggleShowUser: (state: SessionState) => {
-      state.showUser = !state.showUser;
+    setShowUser: (state: SessionState, action: PayloadAction<boolean>) => {
+      state.showUser = action.payload;
     },
   },
 });
@@ -62,5 +58,5 @@ export const {
   addPathPoint,
   updateDuration,
   resetSession,
-  toggleShowUser,
+  setShowUser,
 } = sessionSlice.actions;
