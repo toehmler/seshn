@@ -3,6 +3,7 @@ import { useAppDispatch } from '@/hooks';
 import { addSession, resetSession } from '@/redux';
 import { InProgressSession } from '@/types';
 import { useNavigation } from '@react-navigation/native';
+import { Alert, HStack, Pressable, Text, useToast } from 'native-base';
 import { RefObject } from 'react';
 import MapView from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,17 +20,54 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
 
   const { bottom } = useSafeAreaInsets();
 
+  const toast = useToast();
+
   const saveSession = async (currSession: InProgressSession) => {
-    const snapshot = await mapRef.current?.takeSnapshot({});
-    dispatch(
-      addSession({
-        ...currSession,
-        id: `${currSession.startTimestamp}`,
-        userId: '0',
-        assets: [],
-        mapUri: snapshot,
-      })
-    );
+    try {
+      const snapshot = await mapRef.current?.takeSnapshot({});
+      dispatch(
+        addSession({
+          ...currSession,
+          id: `${currSession.startTimestamp}`,
+          userId: '0',
+          assets: [],
+          mapUri: snapshot,
+        })
+      );
+      toast.show({
+        placement: 'top',
+        id: 'save-session-success',
+        render: () => (
+          <Pressable onPress={() => toast.close('save-session-success')}>
+            <Alert w="100%" status="success">
+              <HStack space={2}>
+                <Alert.Icon mt="1" />
+                <Text fontSize="md" color="coolGray.800">
+                  Session Saved!
+                </Text>
+              </HStack>
+            </Alert>
+          </Pressable>
+        ),
+      });
+    } catch (error) {
+      toast.show({
+        placement: 'top',
+        id: 'save-session-error',
+        render: () => (
+          <Pressable onPress={() => toast.close('save-session-error')}>
+            <Alert w="100%" status="error">
+              <HStack space={2}>
+                <Alert.Icon mt="1" />
+                <Text fontSize="md" color="coolGray.800">
+                  {`Error saving session: ${error}`}
+                </Text>
+              </HStack>
+            </Alert>
+          </Pressable>
+        ),
+      });
+    }
   };
 
   return (
