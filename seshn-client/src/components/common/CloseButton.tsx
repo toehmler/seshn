@@ -1,7 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { HeaderButton } from './HeaderButton';
-
-export const CloseButton = () => {
+interface Props {
+  color?: string;
+}
+export const CloseButton = ({ color }: Props) => {
   const navigation = useNavigation();
 
   return (
@@ -9,6 +11,7 @@ export const CloseButton = () => {
       name="close"
       onPress={() => navigation.goBack()}
       accessibilityLabel="close"
+      color={color}
     />
   );
 };

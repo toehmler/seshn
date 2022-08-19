@@ -8,8 +8,7 @@ export const SettingsScreen = () => {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    // dispatch(setAccessToken());
-    logout(() => dispatch(setAccessToken()));
+    logout({ onSuccess: () => dispatch(setAccessToken()) });
   };
 
   const showActionSheet = useActionSheet(

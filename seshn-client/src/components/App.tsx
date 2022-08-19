@@ -1,4 +1,4 @@
-import { AuthStack } from '@/navigation';
+import { BaseStack } from '@/navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { persistor, store } from '@/redux';
 import { NativeBaseProvider, StatusBar } from 'native-base';
@@ -13,7 +13,7 @@ const App = () => {
         <NativeBaseProvider theme={theme}>
           <NavigationContainer>
             <StatusBar barStyle="default" />
-            <AuthStack />
+            <BaseStack />
           </NavigationContainer>
         </NativeBaseProvider>
       </PersistGate>

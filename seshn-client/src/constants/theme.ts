@@ -15,7 +15,7 @@ const colors = {
     1000: '#002a52',
   },
   bgLight: '#cbeafc', // primary.100
-  bgDark: '#004571', // primary.900
+  bgDark: '#002a52', // primary.1000
 };
 
 export const theme = extendTheme({

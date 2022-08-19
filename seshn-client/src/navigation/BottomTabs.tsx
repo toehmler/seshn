@@ -14,7 +14,9 @@ import { LibraryStack } from './LibraryStack';
 
 export type TabParamList = {
   Feed: NavigatorScreenParams<FeedStackParamList>;
-  Profile: undefined;
+  Profile: {
+    userId: string;
+  };
   Library: undefined;
 };
 

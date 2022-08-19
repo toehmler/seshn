@@ -1,7 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { HeaderButton } from './HeaderButton';
 
-export const GoBackButton = () => {
+interface Props {
+  color?: string;
+}
+
+export const GoBackButton = ({ color }: Props) => {
   const navigation = useNavigation();
 
   return (
@@ -9,6 +13,7 @@ export const GoBackButton = () => {
       name="chevron-back"
       onPress={() => navigation.goBack()}
       accessibilityLabel="go back"
+      color={color}
     />
   );
 };

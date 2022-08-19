@@ -10,6 +10,8 @@ import {
 } from 'react-native-fast-image';
 import ImageModal, { ImageDetail } from 'react-native-image-modal';
 import { OnMove, OnTap } from 'react-native-image-modal/dist/types';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { HeaderButton } from './HeaderButton';
 
 interface ImageModalProps extends FastImageProps {
   isRTL?: boolean;
@@ -55,6 +57,8 @@ export const LightboxImage = ({
 }: Props) => {
   const [isActive, setIsActive] = useBoolean();
 
+  const { top } = useSafeAreaInsets();
+
   return (
     <>
       {isActive && <StatusBar hidden={isActive} />}
@@ -71,6 +75,16 @@ export const LightboxImage = ({
         modalImageResizeMode={activeResizeMode}
         style={imageStyle}
         source={source}
+        renderHeader={(onClose) => (
+          <HeaderButton
+            name="close"
+            color="white"
+            onPress={onClose}
+            mt={top}
+            alignSelf="flex-start"
+            ml={2}
+          />
+        )}
         {...rest}
       />
     </>
