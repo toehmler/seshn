@@ -1,12 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { ReviewMapScreen, SessionTrackerScreen } from '@/screens';
-import { Region } from 'react-native-maps';
 
 export type SessionTrackerStackParamList = {
   SessionTrackerHome: undefined;
-  ReviewMap: {
-    region: Region;
-  };
+  ReviewMap: undefined;
 };
 
 const Stack = createStackNavigator<SessionTrackerStackParamList>();

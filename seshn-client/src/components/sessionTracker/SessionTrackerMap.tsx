@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { addPathPoint } from '@/redux';
 import { Location } from '@/types';
 import { useColorModeValue, useTheme } from 'native-base';
+import { useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
 
@@ -16,8 +17,11 @@ export const SessionTrackerMap = ({ initialCoords }: Props) => {
 
   const { colors } = useTheme();
 
+  const mapRef = useRef<MapView>(null);
+
   return (
     <MapView
+      ref={mapRef}
       style={StyleSheet.absoluteFillObject}
       region={{
         ...initialCoords,
@@ -42,6 +46,12 @@ export const SessionTrackerMap = ({ initialCoords }: Props) => {
         coordinates={currentSession?.path || []}
         strokeColor="red"
         strokeWidth={3}
+        tappable={!tracking}
+        onPress={() => {
+          mapRef.current?.fitToCoordinates(currentSession?.path, {
+            edgePadding: { top: 50, right: 50, bottom: 100, left: 50 },
+          });
+        }}
       />
     </MapView>
   );

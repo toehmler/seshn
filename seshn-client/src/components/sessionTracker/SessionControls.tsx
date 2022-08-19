@@ -1,8 +1,4 @@
-import {
-  calculateRegionFromCoordinates,
-  formatTimeSinceStart,
-  getCurrentLocation,
-} from '@/helpers';
+import { formatTimeSinceStart, getCurrentLocation } from '@/helpers';
 import {
   useActionSheet,
   useAppDispatch,
@@ -29,9 +25,7 @@ export const SessionControls = () => {
 
   const navigation = useNavigation();
 
-  const { tracking, duration, currentSession } = useAppSelector(
-    (state) => state.session
-  );
+  const { tracking, duration } = useAppSelector((state) => state.session);
 
   const dispatch = useAppDispatch();
 
@@ -52,15 +46,8 @@ export const SessionControls = () => {
   );
 
   const handleSave = async () => {
-    const currentLocation = await getCurrentLocation();
-    const region = calculateRegionFromCoordinates(
-      currentSession?.path || []
-    ) || {
-      ...currentLocation,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    };
-    navigation.navigate('ReviewMap', { region });
+    dispatch(stopTracking());
+    navigation.navigate('ReviewMap');
   };
 
   const toggleTrackingState = async () => {
