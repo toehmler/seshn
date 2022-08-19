@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { addPathPoint } from '@/redux';
-import { Location } from '@/types';
+import { InProgressSession, Location } from '@/types';
 import { useColorModeValue, useTheme } from 'native-base';
 import { useRef } from 'react';
 import { StyleSheet } from 'react-native';
@@ -8,11 +8,15 @@ import MapView, { Polyline } from 'react-native-maps';
 
 interface Props {
   initialCoords: Location;
+  currentSession?: InProgressSession;
+  tracking: boolean;
 }
 
-export const SessionTrackerMap = ({ initialCoords }: Props) => {
-  const { currentSession, tracking } = useAppSelector((state) => state.session);
-
+export const SessionTrackerMap = ({
+  initialCoords,
+  currentSession,
+  tracking,
+}: Props) => {
   const dispatch = useAppDispatch();
 
   const { colors } = useTheme();

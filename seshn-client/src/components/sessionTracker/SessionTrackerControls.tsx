@@ -1,16 +1,10 @@
 import { formatTimeSinceStart, getCurrentLocation } from '@/helpers';
-import {
-  useActionSheet,
-  useAppDispatch,
-  useAppSelector,
-  useInterval,
-} from '@/hooks';
+import { useActionSheet, useAppDispatch } from '@/hooks';
 import {
   resetSession,
   resumeTracking,
   startTracking,
   stopTracking,
-  updateDuration,
 } from '@/redux';
 import { useNavigation } from '@react-navigation/native';
 import { Box, Text } from 'native-base';
@@ -18,18 +12,19 @@ import { useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MapButton } from './MapButton';
 
-export const SessionControls = () => {
+interface Props {
+  tracking: boolean;
+  duration: number;
+}
+
+export const SessionTrackerControls = ({ tracking, duration }: Props) => {
   const { bottom, top } = useSafeAreaInsets();
 
   const { width } = useWindowDimensions();
 
   const navigation = useNavigation();
 
-  const { tracking, duration } = useAppSelector((state) => state.session);
-
   const dispatch = useAppDispatch();
-
-  useInterval(() => dispatch(updateDuration(10)), tracking ? 10 : null);
 
   const handleReset = useActionSheet(
     [

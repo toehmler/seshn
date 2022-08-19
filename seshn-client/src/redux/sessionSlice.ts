@@ -2,7 +2,7 @@ import { InProgressSession, Location } from '@/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface SessionState {
-  tracking?: boolean;
+  tracking: boolean;
   duration: 0;
   currentSession?: InProgressSession;
   showUser?: boolean;
