@@ -1,14 +1,15 @@
 import { useAuth } from '@/hooks';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen, PostScreen } from '@/screens';
+import { LoginScreen, MapScreen, PostScreen } from '@/screens';
 import { useColorModeValue, useTheme } from 'native-base';
 import { BottomTabs, TabParamList } from './BottomTabs';
 import { FeedStackParamList } from './FeedStack';
 import { ProfileStackParamList } from './ProfileStack';
 import { LibraryStackParamList } from './LibraryStack';
-import { Asset } from '@/types';
+import { Asset, Location } from '@/types';
 import { CloseButton, CustomHeader } from '@/components';
+import { SessionTrackerStackParamList } from './SessionTrackerStack';
 
 export type BaseStackParamList = {
   Authorized: NavigatorScreenParams<TabParamList>;
@@ -16,6 +17,9 @@ export type BaseStackParamList = {
   Post: {
     assets: Asset[];
     initialIndex: number;
+  };
+  Map: {
+    path?: Location[];
   };
 };
 
@@ -26,7 +30,8 @@ declare global {
         FeedStackParamList,
         TabParamList,
         ProfileStackParamList,
-        LibraryStackParamList {}
+        LibraryStackParamList,
+        SessionTrackerStackParamList {}
   }
 }
 
@@ -83,6 +88,7 @@ export const BaseStack = () => {
               ),
             }}
           />
+          <Stack.Screen name="Map" component={MapScreen} />
         </>
       ) : (
         <Stack.Screen
