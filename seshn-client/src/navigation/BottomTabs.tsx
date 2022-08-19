@@ -15,7 +15,9 @@ import { SessionTrackerStack } from './SessionTrackerStack';
 
 export type TabParamList = {
   Feed: NavigatorScreenParams<FeedStackParamList>;
-  Profile: undefined;
+  Profile: {
+    userId: string;
+  };
   Library: undefined;
   SessionTracker: undefined;
 };

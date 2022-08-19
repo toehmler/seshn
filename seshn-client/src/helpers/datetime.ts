@@ -3,6 +3,8 @@ import { Post } from '@/types';
 
 export const DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 
+export const READABLE_FORMAT = 'MMM d, yyyy';
+
 export const getPostDate = (post: Post): Date => {
   return parse(post.date, DATETIME_FORMAT, new Date());
 };
@@ -27,4 +29,8 @@ export const formatTimeSinceStart = (duration: number): string => {
   const hours = Math.floor(minutes / 60);
 
   return `${pad(hours)}:${pad(minutes % 60)}:${pad(seconds % 60)}`;
+};
+
+export const formatPostDate = (date: string) => {
+  return format(parse(date, DATETIME_FORMAT, new Date()), READABLE_FORMAT);
 };

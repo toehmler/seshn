@@ -1,19 +1,13 @@
-import { HStack, IconButton, Text, useColorModeValue } from 'native-base';
+import { HStack, IconButton, Text } from 'native-base';
 import { triggerHaptics } from '@/helpers';
 import { useBoolean } from '@/hooks';
 import { Ionicon } from '../common';
 
 interface Props {
-  activeSlideIndex: number;
-  numAssets: number;
   numLikes: number;
 }
 
-export const PostFooter = ({
-  activeSlideIndex,
-  numAssets,
-  numLikes,
-}: Props) => {
+export const PostFooter = ({ numLikes }: Props) => {
   const [liked, setLiked] = useBoolean();
 
   const handleLike = () => {
@@ -39,13 +33,13 @@ export const PostFooter = ({
         />
         <Text>{numLikes}</Text>
       </HStack>
-      <Text
-        fontWeight="bold"
-        fontSize={20}
-        color={useColorModeValue('coolGray.500', 'coolGray.400')}
-      >
-        {activeSlideIndex + 1}/{numAssets}
-      </Text>
+      <IconButton
+        icon={<Ionicon name="chatbox-outline" size="2xl" color="gray.500" />}
+        onPress={() => null}
+        borderRadius="full"
+        bgColor="transparent"
+        accessibilityLabel="comment"
+      />
     </HStack>
   );
 };

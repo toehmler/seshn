@@ -20,7 +20,7 @@ export const HeaderButton = ({
       icon={<Ionicon name={name} color={color || systemColor} size="xl" />}
       borderRadius="full"
       _pressed={{
-        bg: 'primary.500:alpha.20',
+        bg: `${color || systemColor}:alpha.20`,
       }}
       onPress={onPress}
       {...rest}
