@@ -6,6 +6,7 @@ export * from './Ionicon';
 export * from './LightboxImage';
 export * from './Logo';
 export * from './MainLayout';
+export * from './Map';
 export * from './SearchBar';
 export * from './Spacer';
 export * from './SportBadge';

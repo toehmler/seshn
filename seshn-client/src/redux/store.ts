@@ -15,10 +15,14 @@ import {
   persistStore,
 } from 'redux-persist';
 import { videoPlayerSlice } from './videoPlayerSlice';
+import { sessionSlice } from './sessionSlice';
+import { librarySlice } from './librarySlice';
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   feed: feedSlice.reducer,
+  library: librarySlice.reducer,
+  session: sessionSlice.reducer,
   settings: settingsSlice.reducer,
   auth: authSlice.reducer,
   videoPlayer: videoPlayerSlice.reducer,
