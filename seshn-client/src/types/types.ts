@@ -56,6 +56,11 @@ export interface Session extends InProgressSession {
   id: string;
   userId: string;
   assets: Asset[];
-  mapUri?: string;
+  map?: {
+    path: Location[];
+    uri: string;
+    width: number;
+    height: number;
+  };
   address?: Address;
 }

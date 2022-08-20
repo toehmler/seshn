@@ -88,7 +88,11 @@ export const BaseStack = () => {
               ),
             }}
           />
-          <Stack.Screen name="Map" component={MapScreen} />
+          <Stack.Screen
+            name="Map"
+            component={MapScreen}
+            options={{ presentation: 'transparentModal', headerShown: false }}
+          />
         </>
       ) : (
         <Stack.Screen

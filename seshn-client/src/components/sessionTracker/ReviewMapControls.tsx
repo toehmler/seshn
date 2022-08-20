@@ -5,6 +5,7 @@ import { InProgressSession } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { Alert, HStack, Pressable, Text, useToast } from 'native-base';
 import { RefObject } from 'react';
+import { useWindowDimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -22,6 +23,8 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
 
   const toast = useToast();
 
+  const { width, height } = useWindowDimensions();
+
   const saveSession = async (currSession: InProgressSession) => {
     try {
       const snapshot = await mapRef.current?.takeSnapshot({});
@@ -35,7 +38,9 @@ export const ReviewMapControls = ({ mapRef, session }: Props) => {
           id: `${currSession.startTimestamp}`,
           userId: '0',
           assets: [],
-          mapUri: snapshot,
+          map: snapshot
+            ? { uri: snapshot, width, height, path: session.path }
+            : undefined,
         })
       );
       toast.show({

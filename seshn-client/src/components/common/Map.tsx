@@ -1,6 +1,6 @@
 import { Location } from '@/types';
 import { Circle, useColorModeValue, useTheme } from 'native-base';
-import { forwardRef, Ref, useCallback } from 'react';
+import { Ref, forwardRef, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { MapViewProps, Marker, Polyline } from 'react-native-maps';
 
@@ -32,7 +32,7 @@ export const Map = forwardRef(
       (animated = true) =>
         // @ts-ignore
         ref?.current?.fitToCoordinates(path, {
-          edgePadding: { top: 30, right: 50, bottom: 100, left: 50 },
+          edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
           animated,
         }),
       [ref, path]
@@ -62,7 +62,7 @@ export const Map = forwardRef(
                 }
               }}
             />
-            {showMarkers && path?.length > 2 && (
+            {showMarkers && path?.length > 1 && (
               <>
                 <Marker
                   coordinate={path[0]}
@@ -102,3 +102,5 @@ export const Map = forwardRef(
     );
   }
 );
+
+Map.displayName = 'Map';
